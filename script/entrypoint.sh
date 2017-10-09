@@ -39,7 +39,7 @@ for f in `ls $NGDIR/conf.d/*.conf`
 do
     echo "Parse $f"
     dmn=`basename ${f%.conf}`
-    DOMAIN_LIST="$DOMAIN_LIST -d $dmn"
+    DOMAIN_LIST="$DOMAIN_LIST;$dmn"
 
     sslkey="$NGDIR/ssl/$dmn/privkey.pem"
     sslcrt="$NGDIR/ssl/$dmn/fullchain.pem"
@@ -82,7 +82,8 @@ mv -vf $NGDIR/conf.d $NGDIR/conf.d.disabled
 #            echo     $certbot
 #            eval     $certbot
 
-            for dmn in $(echo $DOMAIN_LIST|tr "\-d" "\n")
+            echo "DOMAIN_LIST: $DOMAIN_LIST"
+            for dmn in $(echo $DOMAIN_LIST|tr ";" "\n")
             do
                 certbot certonly       \
                     -tn                \
@@ -94,6 +95,7 @@ mv -vf $NGDIR/conf.d $NGDIR/conf.d.disabled
                     -d $dmn            \
 
                 ssld="$NGDIR/ssl/$dmn"
+                echo "SSL dir: $ssld"
                 [ ! -d $ssld ] && mkdir -vp $ssld
                 cp -fv $LELD/$dmn/privkey.pem   $ssld/privkey.pem
                 cp -fv $LELD/$dmn/fullchain.pem $ssld/fullchain.pem
