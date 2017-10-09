@@ -1,0 +1,6 @@
+pagespeed/*
+etc/conf.d/*
+etc/letsencrypt/*
+ssl/*
+letsencrypt/*
+etc/nginx/ssl/*
