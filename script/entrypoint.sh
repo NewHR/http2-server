@@ -41,12 +41,27 @@ do
     dmn=`basename ${f%.conf}`
     DOMAIN_LIST="$DOMAIN_LIST;$dmn"
 
+    d1=`echo $dmn|cut -d. -f1`
+    d2=`echo $dmn|cut -d. -f2`
+    d3=`echo $dmn|cut -d. -f3`
+    if [ ! -z "$d3" ]
+    then
+        subdomain=$d1
+        domain="$d2.$d3"
+        echo "Detect subdomain $subdomain / $domain"
+    else
+        domain=$dmn
+        subdomain="error-subdomain-path"
+    fi
+
     sslkey="$NGDIR/ssl/$dmn/privkey.pem"
     sslcrt="$NGDIR/ssl/$dmn/fullchain.pem"
 
     echo "Configure domain $dmn"
     sed -i "s|DOMAINNAME|$dmn|g;s|WEBROOT|$WEBROOT|g" $f
     sed -i "s|SSL_KEY|$sslkey|g;s|SSL_CRT|$sslcrt|g"  $f
+    sed -i "s|SUBDOMAIN|$subdomain|g" $f
+    sed -i "s|DOMAIN|$domain|g" $f
 done
 
 ###
@@ -76,12 +91,6 @@ mv -vf $NGDIR/conf.d $NGDIR/conf.d.disabled
         then
             echo "letsencrypt renew certificates disabled"
         else
-#            certbot="certbot"
-#            certbot="$certbot certonly -tn --agree-tos --renew-by-default --webroot"
-#            certbot="$certbot --email $LE_EMAIL -w $WEBROOT $DOMAIN_LIST"
-#            echo     $certbot
-#            eval     $certbot
-
             echo "DOMAIN_LIST: $DOMAIN_LIST"
             for dmn in $(echo $DOMAIN_LIST|tr ";" "\n")
             do
