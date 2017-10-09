@@ -24,7 +24,7 @@ services:
 
         environment:
             - TIMEZONE=Europe/Moscow
-            - LETSENCRYPT=true
+            - LETSENCRYPT=false
             - LE_EMAIL=
             - LE_DNAME=
             - LE_RT=70d
