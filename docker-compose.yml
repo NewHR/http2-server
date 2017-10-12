@@ -26,7 +26,6 @@ services:
             - TIMEZONE=Europe/Moscow
             - LETSENCRYPT=false
             - LE_EMAIL=
-            - LE_DNAME=
             - LE_RT=70d
 
 #EOF#
