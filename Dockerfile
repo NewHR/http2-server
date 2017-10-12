@@ -3,8 +3,7 @@ FROM nginx:stable-alpine
 # Default values
 ENV TIMEZONE=Europe/Moscow
 ENV LETSENCRYPT=false
-ENV LE_EMAIL=some@mail
-ENV LE_DNAME=www.error.host
+ENV LE_EMAIL=root@localhost
 ENV LE_RT=1y
 
 ADD script/*.sh /
